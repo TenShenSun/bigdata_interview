@@ -52,8 +52,52 @@
 
 ### 2.5 大数据相关
 #### 2.5.1 Hdfs
-#### 2.5.2 MapReduce
-#### 2.5.3 Yarn
+#### 2.5.2 Hadoop
+
+
+
+##### 2.5.2.1 MapReduce
+>[Hadoop官网](http://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html)
+
+应用程序通常实现`Mapper`和`Reducer`接口提供 `map`和`reduce`方法。
+
+
+1. mapper
+
+   Mapper将 输入key/value 映射为一组中间 key/value对。
+
+   Hadoop MapReduce框架为作业的`InputFormat`生成的每个`InputSplit`生成一个map任务。 
+
+   对`Mapper`输出进行排序，然后根据`Reducer`进行分区。分区总数与作业的reduce任务数相同。用户可以通过实现自定义`分区程序`来控制哪些键（以及记录）转到哪个`Reducer`。 
+
+2. Reducer
+
+   Reduer 将 同一个键的中间值归约成更小的一组值。
+
+   Reducer包括三个基本阶段:`shuffle`,`sort`and`reduce`。
+
+   - Shuffle
+
+     将Mapper的输出排序后作为Reduer的输入。
+
+   - Sort
+
+     框架通过key来进行分组（不同的Mapper输出可能会有相同的key）
+
+   - Reduce
+
+     Reducer的输出是不排序的。
+
+3. shuffle概念&流程
+
+   shuffle（官网原话）
+
+   Input to the `Reducer` is the sorted output of the mappers. In this phase the framework fetches the relevant partition of the output of all the mappers, via HTTP.
+
+   定义：MR确保每个reduce的输入都是**按键排序**的。系统执行排序的过程（从map出到reduce输入的这段过程）称为shuffle。
+
+   
+
 #### 2.5.4 Spark 
 
 1. RDD懒加载，更新
