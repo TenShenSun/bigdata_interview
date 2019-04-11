@@ -329,6 +329,7 @@ select deptno,avg(sal) avg_sal from emp group by deptno having avg_sal >2000;
 
 ```
 
+```sql
 sort by
 
 distributed by
@@ -353,8 +354,25 @@ cluster by除了具有distribute by的功能外还兼具sort by的功能，但�
 
 
 
+distribute by 和 order by 不能连用
+
+partition by 和 sort by不能连用
+
+//待总结 目前问题：partition by ssex order by sno这种平均值出现了问题
+--select sno,sname,avg(sage) over(partition by ssex order by sno) avg_age,ssex from student;
+--select sno,sname,avg(sage) over(distribute by ssex order by sno) avg_age,ssex from student;
+
+set mapred.reduce.tasks = 2;
+--select sno,sname,avg(sage) over(distribute by ssex sort by sno) avg_age,ssex from student;
+--select sno,sname,avg(sage) over(partition by ssex order by sno) avg_age,ssex from student;
+select sno,sname,avg(sage) over(partition by ssex) avg_age,ssex from student sort by sno;
+```
 
 
+
+
+
+```
 问题总结一:
 oracle、mysql、hive中的字段别名是否可以在where、group by、having、order by中直接使用
 
@@ -369,6 +387,13 @@ Oracle 版本12c
 Hive 版本1.3.0
 
 where、group by、having中不能直接使用字段的别名，order by可以直接使用
+
+
+```
+
+
+
+
 
 
 窗口函数
